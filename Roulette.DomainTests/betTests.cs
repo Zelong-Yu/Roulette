@@ -280,5 +280,40 @@ namespace Roulette.Domain.Tests
             //Test Center Cases
             Assert.AreEqual("23/26\n25/26\n26/27\n26/29\n", Bet.SplitBet("  26"));
         }
+
+        [TestMethod()]
+        public void CornerBetTest()
+        {
+            //Test 0/00 cases
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("00  "));
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("00"));
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("0"));
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("   0"));
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("0  "));
+            Assert.AreEqual("0/00 don't win Corner bet", Bet.CornerBet("    37"));
+
+            //Test invalid input
+            Assert.AreEqual("-1", Bet.CornerBet("0  0  "));
+            Assert.AreEqual("-1", Bet.CornerBet("  39  "));
+            Assert.AreEqual("-1", Bet.CornerBet("-2"));
+            Assert.AreEqual("-1", Bet.CornerBet("asdjuag"));
+            Assert.AreEqual("-1", Bet.CornerBet(""));
+            Assert.AreEqual("-1", Bet.CornerBet("392139487654367"));
+
+            //Test Corner cases
+            Assert.AreEqual("1/2/4/5\n", Bet.CornerBet("1"));
+            Assert.AreEqual("2/3/5/6\n", Bet.CornerBet("3   "));
+            Assert.AreEqual("31/32/34/35\n", Bet.CornerBet("  34   "));
+            Assert.AreEqual("32/33/35/36\n", Bet.CornerBet(" 36 "));
+
+            //Test Edge Cases
+            Assert.AreEqual("1/2/4/5\n2/3/5/6\n", Bet.CornerBet("2"));
+            Assert.AreEqual("31/32/34/35\n32/33/35/36\n", Bet.CornerBet(" 35"));
+            Assert.AreEqual("10/11/13/14\n13/14/16/17\n", Bet.CornerBet("13 "));
+            Assert.AreEqual("23/24/26/27\n26/27/29/30\n", Bet.CornerBet("27"));
+
+            //Test Center Cases
+            Assert.AreEqual("22/23/25/26\n23/24/26/27\n25/26/28/29\n26/27/29/30\n", Bet.CornerBet("  26"));
+        }
     }
 }

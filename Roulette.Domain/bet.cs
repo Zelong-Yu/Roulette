@@ -326,10 +326,10 @@ namespace Roulette.Domain
 
             var otherNum = from n in numbers
                            where (n != 0 && n != 37) &&  //Don't select 0 or 00
-                           (parsedInt % 3 == 1 && (n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) ||//First Column. No left number
-                           parsedInt % 3 == 2 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) || //Second Column
-                           parsedInt % 3 == 0 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 3 == parsedInt)) //Third Column. No right number
-                                select n;
+                           (parsedInt % 3 == 1 && (n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) ||//wheeled number is in First Column. No left number
+                           parsedInt % 3 == 2 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) || //wheeled number is in Second Column
+                           parsedInt % 3 == 0 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 3 == parsedInt)) //wheeled number is in Third Column. No right number
+                           select n;
 
             
             //Create a string builder that contains the winning SixNumbers
@@ -340,9 +340,48 @@ namespace Roulette.Domain
                     sb.Append($"{n}/{parsedInt}\n");
                 else sb.Append($"{parsedInt}/{n}\n");
             }
+           
+            return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// Check the winning bet of a Corner bet. Odds against winning 8 and 1/4 to 1. Use 00 or 37 to denote 00
+        /// </summary>
+        /// <param name="bet">Bet in Corner Bet</param>
+        /// <returns>
+        /// Returns the corresponding Corners (4 continguous numbers) that the bet wins
+        /// Return "0/00 don't win Corner bet" if wheeled number is 0/00 
+        /// Return "-1" if input is not a valid bid. 
+        /// </returns>
+        public static string CornerBet(string bet)
+        {
+            bet = bet.Trim();
+            if (bet == "00" || bet == "0" || bet == "37") return "0/00 don't win Corner bet";
+            bool isValid = int.TryParse(bet, out int parsedInt);
+            if (!isValid) return "-1";
+            if (!ValidateBet(parsedInt)) return "-1";
+
+            //find out a list of the Start of the 4 Contiguoud Numbrt that contains the wheeled number
+            var StartOfFourNum = from n in numbers
+                                 where (n >= 1 && n <= 32) &&  //Don't select 0 or 00, and 32 is the largest possible start
+                                        n % 3 != 0 && //StartOfFourNum cannot in 3rd Column
+                                                      //wheeled number must be among the Four Numbers
+                                        (parsedInt % 3 == 1 && (n + 3 == parsedInt || n == parsedInt) ||  //wheeled number is in First Column
+                                        parsedInt % 3 == 2 && (n + 4 == parsedInt || n + 3 == parsedInt || n + 1 == parsedInt || n == parsedInt) || //wheeled number is in Second Column
+                                        parsedInt % 3 == 0 && (n + 4 == parsedInt || n + 1 == parsedInt)) ////wheeled number is in Third Column
+                                 select n;
+
+            //Create a string builder that contains the winning Four Contiguous Numbers
+            StringBuilder sb = new StringBuilder();
+            foreach (var n in StartOfFourNum)
+            {
+                 sb.Append($"{n}/{n + 1}/{n + 3}/{n + 4}\n");
+            }
 
             return sb.ToString();
         }
+
 
     }
 }
