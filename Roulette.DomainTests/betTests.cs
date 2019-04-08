@@ -156,7 +156,7 @@ namespace Roulette.Domain.Tests
             Assert.AreEqual("0/00 don't win Dozens bet", Bet.DozensBet("00"));
             Assert.AreEqual("0/00 don't win Dozens bet", Bet.DozensBet("0"));
             Assert.AreEqual("0/00 don't win Dozens bet", Bet.DozensBet("    37"));
-            Assert.AreEqual("-1", Bet.DozensBet("0  0  "));   
+            Assert.AreEqual("-1", Bet.DozensBet("0  0  "));
             Assert.AreEqual("1st Dozen", Bet.DozensBet("    9 "));
             Assert.AreEqual("3rd Dozen", Bet.DozensBet("35   "));
             Assert.AreEqual("1st Dozen", Bet.DozensBet("    12 "));
@@ -171,6 +171,54 @@ namespace Roulette.Domain.Tests
             Assert.AreEqual("-1", Bet.DozensBet("asdjuag"));
             Assert.AreEqual("-1", Bet.DozensBet(""));
             Assert.AreEqual("-1", Bet.DozensBet("392139487654367"));
+        }
+
+        [TestMethod()]
+        public void ColumnsBetTest()
+        {
+            Assert.AreEqual("0/00 don't win Columns bet", Bet.ColumnsBet("00  "));
+            Assert.AreEqual("0/00 don't win Columns bet", Bet.ColumnsBet("00"));
+            Assert.AreEqual("0/00 don't win Columns bet", Bet.ColumnsBet("0"));
+            Assert.AreEqual("0/00 don't win Columns bet", Bet.ColumnsBet("    37"));
+            Assert.AreEqual("3rd Column", Bet.ColumnsBet("    9 "));
+            Assert.AreEqual("2nd Column", Bet.ColumnsBet("35   "));
+            Assert.AreEqual("3rd Column", Bet.ColumnsBet("    12 "));
+            Assert.AreEqual("1st Column", Bet.ColumnsBet("13          "));
+            Assert.AreEqual("2nd Column", Bet.ColumnsBet("26"));
+            Assert.AreEqual("1st Column", Bet.ColumnsBet("1"));
+            Assert.AreEqual("3rd Column", Bet.ColumnsBet("18"));
+            Assert.AreEqual("1st Column", Bet.ColumnsBet("25"));
+            Assert.AreEqual("3rd Column", Bet.ColumnsBet("36"));
+            Assert.AreEqual("-1", Bet.ColumnsBet("0  0  "));
+            Assert.AreEqual("-1", Bet.ColumnsBet("  39  "));
+            Assert.AreEqual("-1", Bet.ColumnsBet("-2"));
+            Assert.AreEqual("-1", Bet.ColumnsBet("asdjuag"));
+            Assert.AreEqual("-1", Bet.ColumnsBet(""));
+            Assert.AreEqual("-1", Bet.ColumnsBet("392139487654367"));
+        }
+
+        [TestMethod()]
+        public void StreetBetTest()
+        {
+            Assert.AreEqual("0/00 don't win Street bet", Bet.StreetBet("00  "));
+            Assert.AreEqual("0/00 don't win Street bet", Bet.StreetBet("00"));
+            Assert.AreEqual("0/00 don't win Street bet", Bet.StreetBet("0"));
+            Assert.AreEqual("0/00 don't win Street bet", Bet.StreetBet("    37"));
+            Assert.AreEqual("7/8/9", Bet.StreetBet("    9 "));
+            Assert.AreEqual("34/35/36", Bet.StreetBet("35   "));
+            Assert.AreEqual("10/11/12", Bet.StreetBet("    12 "));
+            Assert.AreEqual("13/14/15", Bet.StreetBet("13          "));
+            Assert.AreEqual("25/26/27", Bet.StreetBet("26"));
+            Assert.AreEqual("1/2/3", Bet.StreetBet("1"));
+            Assert.AreEqual("16/17/18", Bet.StreetBet("18"));
+            Assert.AreEqual("25/26/27", Bet.StreetBet("25"));
+            Assert.AreEqual("34/35/36", Bet.StreetBet("36"));
+            Assert.AreEqual("-1", Bet.StreetBet("0  0  "));
+            Assert.AreEqual("-1", Bet.StreetBet("  39  "));
+            Assert.AreEqual("-1", Bet.StreetBet("-2"));
+            Assert.AreEqual("-1", Bet.StreetBet("asdjuag"));
+            Assert.AreEqual("-1", Bet.StreetBet(""));
+            Assert.AreEqual("-1", Bet.StreetBet("392139487654367"));
         }
     }
 }

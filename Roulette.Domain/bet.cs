@@ -158,7 +158,7 @@ namespace Roulette.Domain
         }
 
         /// <summary>
-        /// Check the winning bet of an Even/Odd bet. Odds against winning 1 and 1/9 to 1. Use 00 or 37 to denote 00
+        /// Check the winning bet of an Red/Black bet. Odds against winning 1 and 1/9 to 1. Use 00 or 37 to denote 00
         /// </summary>
         /// <param name="bet">Bet in Red/Black Bet</param>
         /// <returns>
@@ -178,7 +178,7 @@ namespace Roulette.Domain
         }
 
         /// <summary>
-        /// Check the winning bet of an Low/High bet. Odds against winning 1 and 1/9 to 1. Use 00 or 37 to denote 00
+        /// Check the winning bet of a Low/High bet. Odds against winning 1 and 1/9 to 1. Use 00 or 37 to denote 00
         /// </summary>
         /// <param name="bet">Bet in Low/High Bet</param>
         /// <returns>
@@ -198,7 +198,7 @@ namespace Roulette.Domain
         }
 
         /// <summary>
-        /// Check the winning bet of an Dozens bet. Odds against winning 2 and 1/6 to 1. Use 00 or 37 to denote 00
+        /// Check the winning bet of a Dozens bet. Odds against winning 2 and 1/6 to 1. Use 00 or 37 to denote 00
         /// </summary>
         /// <param name="bet">Bet in Dozens Bet</param>
         /// <returns>
@@ -215,12 +215,61 @@ namespace Roulette.Domain
             bool isValid = int.TryParse(bet, out int parsedInt);
             if (!isValid) return "-1";
             if (!ValidateBet(parsedInt)) return "-1";
-            //return which dozen does the wins
+            //return which dozen does the bet wins
             if (parsedInt <= 12)
                 return "1st Dozen";
             else if (parsedInt <= 24)
                 return "2nd Dozen";
             else return "3rd Dozen";
         }
+
+        /// <summary>
+        /// Check the winning bet of a Columns bet. Odds against winning 2 and 1/6 to 1. Use 00 or 37 to denote 00
+        /// </summary>
+        /// <param name="bet">Bet in Columns Bet</param>
+        /// <returns>
+        /// Return "1st Column" if the bet is among 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34
+        /// Return "2nd Column" if the bet is among 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35
+        /// Return "3rd Column" if the bet is among 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36
+        /// Return "0/00 don't win Columns bet" if bet is 0/00
+        /// Return "-1" if input is not a valid bid. 
+        /// </returns>
+        public static string ColumnsBet(string bet)
+        {
+            bet = bet.Trim();
+            if (bet == "00" || bet == "0" || bet == "37") return "0/00 don't win Columns bet";
+            bool isValid = int.TryParse(bet, out int parsedInt);
+            if (!isValid) return "-1";
+            if (!ValidateBet(parsedInt)) return "-1";
+            //return which column does the bet wins
+            if (parsedInt % 3==1)
+                return "1st Column";
+            else if (parsedInt %3 ==2)
+                return "2nd Column";
+            else return "3rd Column";
+        }
+
+        /// <summary>
+        /// Check the winning bet of a Street bet. Odds against winning 11 and 2/3 to 1. Use 00 or 37 to denote 00
+        /// </summary>
+        /// <param name="bet">Bet in Columns Bet</param>
+        /// <returns>
+        /// Returns the corresponding Street (3 number row) that the bet wins
+        /// Return "0/00 don't win Columns bet" if bet is 0/00
+        /// Return "-1" if input is not a valid bid. 
+        /// </returns>
+        public static string StreetBet(string bet)
+        {
+            bet = bet.Trim();
+            if (bet == "00" || bet == "0" || bet == "37") return "0/00 don't win Street bet";
+            bool isValid = int.TryParse(bet, out int parsedInt);
+            if (!isValid) return "-1";
+            if (!ValidateBet(parsedInt)) return "-1";
+            //Get the row number (start from 0)
+            int RowNumber = (parsedInt - 1) / 3;
+            //return which street does the bet wins
+            return $"{RowNumber*3+1}/{RowNumber*3+2}/{RowNumber*3+3}";
+        }
+
     }
 }

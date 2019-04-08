@@ -18,7 +18,7 @@ namespace Roulette
                 Console.WriteLine($"{i++} {item}");
             }
             string[] b = new string[] { "2134r", "wafa" };
-            Console.WriteLine(b);
+            Console.WriteLine(Bet.StreetBet(12.ToString()));
 
         }
     }
