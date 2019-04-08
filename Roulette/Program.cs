@@ -19,7 +19,7 @@ namespace Roulette
             }
             string[] b = new string[] { "2134r", "wafa" };
             Console.WriteLine(Bet.StreetBet(12.ToString()));
-
+            Console.WriteLine(Bet.SixNumbersBet(36.ToString()));
         }
     }
 }

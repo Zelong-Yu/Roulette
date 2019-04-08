@@ -72,30 +72,31 @@ namespace Roulette.Domain
         /// An array with colors on the Roulette(00 is represented in index 37)
         /// </returns>
         public string[] Colors { get => colors; }
-        public int CurrentBetNumber { get => currentBetNumber; protected set => currentBetNumber = value; }
+        //Current Number on the RouletteWheel
+        public int CurrentNumber { get => currentBetNumber; protected set => currentBetNumber = value; }
 
         ///<summary>
-        ///Generate a bet
+        ///Generate a bet/Spin the wheel
         ///</summary>
         public Bet()
         {
-            this.CurrentBetNumber = rnd.Next(0, 37);
+            this.CurrentNumber = rnd.Next(0, 37);
         }
 
         /// <summary>
-        /// Take Next Bet
+        /// Take Next Bet/Spin Wheel Again
         /// </summary>
         /// <returns>
-        /// An integer representing next bet. (00 is represented by 37)
+        /// An integer representing next number generated on the wheel. (00 is represented by 37)
         /// </returns>
         public int NextBet()
         {
-            this.CurrentBetNumber = rnd.Next(0, 37);
-            return this.CurrentBetNumber;
+            this.CurrentNumber = rnd.Next(0, 37);
+            return this.CurrentNumber;
         }
 
         /// <summary>
-        /// Validate an integer to check if it is an valid bet. (00 is represented by 37)
+        /// Validate an integer to check if it is a valid bet. (00 is represented by 37)
         /// </summary>
         /// <param name="betToValidate">Int to be validated as valid bet number</param>
         /// <returns>
@@ -269,6 +270,39 @@ namespace Roulette.Domain
             int RowNumber = (parsedInt - 1) / 3;
             //return which street does the bet wins
             return $"{RowNumber*3+1}/{RowNumber*3+2}/{RowNumber*3+3}";
+        }
+
+        /// <summary>
+        /// Check the winning bet of a 6Numbers bet. Odds against winning 5 and 1/3 to 1. Use 00 or 37 to denote 00
+        /// </summary>
+        /// <param name="bet">Bet in 6Numbers Bet</param>
+        /// <returns>
+        /// Returns the corresponding Double Rows (3 number row) that the bet wins
+        /// Return "0/00 don't win 6Numbers bet" if bet is 0/00
+        /// Return "-1" if input is not a valid bid. 
+        /// </returns>
+        public static string SixNumbersBet(string bet)
+        {
+            bet = bet.Trim();
+            if (bet == "00" || bet == "0" || bet == "37") return "0/00 don't win 6Numbers bet";
+            bool isValid = int.TryParse(bet, out int parsedInt);
+            if (!isValid) return "-1";
+            if (!ValidateBet(parsedInt)) return "-1";
+
+            //find out a list of the Start of the six numbers that contains the wheeled number
+
+            var StartOfSixNum = from n in numbers
+                                where n % 3 == 1 && n <= 31 //StartOfSixNum cannot be bigger than 31
+                                && (n<= parsedInt && parsedInt <= n+5) //wheeled number must be among the Six Numbers
+                                select n;
+            //Create a string builder that contains the winning SixNumbers
+            StringBuilder sb = new StringBuilder();
+            foreach (var n in StartOfSixNum)
+            {
+                sb.Append($"{n}/{n+1}/{n+2}/{n+3}/{n+4}/{n+5}\n");
+            }
+
+            return sb.ToString();
         }
 
     }

@@ -34,19 +34,19 @@ namespace Roulette.Domain.Tests
         [TestMethod()]
         public void BetConstructorTest()
         {
-            Assert.IsNotNull(oot.CurrentBetNumber); //CurrentBetNumber is not null
+            Assert.IsNotNull(oot.CurrentNumber); //CurrentBetNumber is not null
 
             //CurrentBetNumber should be within Available numbers
-            Assert.IsTrue(oot.Numbers.Any(x => x == oot.CurrentBetNumber));
+            Assert.IsTrue(oot.Numbers.Any(x => x == oot.CurrentNumber));
 
             //NextBet should (mostly) not equals to current bet
-            Assert.AreNotEqual(oot.CurrentBetNumber, oot.NextBet());
+            Assert.AreNotEqual(oot.CurrentNumber, oot.NextBet());
 
             //NextBet should (mostly) not equals to current bet
-            Assert.AreNotEqual(oot.CurrentBetNumber, oot.NextBet());
+            Assert.AreNotEqual(oot.CurrentNumber, oot.NextBet());
 
             //NextBet should (mostly) not equals to current bet
-            Assert.AreNotEqual(oot.CurrentBetNumber, oot.NextBet());
+            Assert.AreNotEqual(oot.CurrentNumber, oot.NextBet());
         }
 
         [TestMethod()]
@@ -219,6 +219,30 @@ namespace Roulette.Domain.Tests
             Assert.AreEqual("-1", Bet.StreetBet("asdjuag"));
             Assert.AreEqual("-1", Bet.StreetBet(""));
             Assert.AreEqual("-1", Bet.StreetBet("392139487654367"));
+        }
+
+        [TestMethod()]
+        public void SixNumbersBetTest()
+        {
+            Assert.AreEqual("0/00 don't win 6Numbers bet", Bet.SixNumbersBet("00  "));
+            Assert.AreEqual("0/00 don't win 6Numbers bet", Bet.SixNumbersBet("00"));
+            Assert.AreEqual("0/00 don't win 6Numbers bet", Bet.SixNumbersBet("0"));
+            Assert.AreEqual("0/00 don't win 6Numbers bet", Bet.SixNumbersBet("    37"));
+            Assert.AreEqual("4/5/6/7/8/9\n7/8/9/10/11/12\n", Bet.SixNumbersBet("    9 "));
+            Assert.AreEqual("31/32/33/34/35/36\n", Bet.SixNumbersBet("35   "));
+            Assert.AreEqual("7/8/9/10/11/12\n10/11/12/13/14/15\n", Bet.SixNumbersBet("    12 "));
+            Assert.AreEqual("10/11/12/13/14/15\n13/14/15/16/17/18\n", Bet.SixNumbersBet("13          "));
+            Assert.AreEqual("22/23/24/25/26/27\n25/26/27/28/29/30\n", Bet.SixNumbersBet("26"));
+            Assert.AreEqual("1/2/3/4/5/6\n", Bet.SixNumbersBet("1"));
+            Assert.AreEqual("13/14/15/16/17/18\n16/17/18/19/20/21\n", Bet.SixNumbersBet("18"));
+            Assert.AreEqual("22/23/24/25/26/27\n25/26/27/28/29/30\n", Bet.SixNumbersBet("25"));
+            Assert.AreEqual("31/32/33/34/35/36\n", Bet.SixNumbersBet("36"));
+            Assert.AreEqual("-1", Bet.SixNumbersBet("0  0  "));
+            Assert.AreEqual("-1", Bet.SixNumbersBet("  39  "));
+            Assert.AreEqual("-1", Bet.SixNumbersBet("-2"));
+            Assert.AreEqual("-1", Bet.SixNumbersBet("asdjuag"));
+            Assert.AreEqual("-1", Bet.SixNumbersBet(""));
+            Assert.AreEqual("-1", Bet.SixNumbersBet("392139487654367"));
         }
     }
 }
