@@ -11,11 +11,15 @@ namespace Roulette
     {
         static void Main(string[] args)
         {
-            Roulette.Domain.bet a = new Roulette.Domain.bet();
-            foreach (var item in a.colors)
+            Bet a = new Bet();
+            int i = 0;
+            foreach (var item in a.Colors)
             {
-                Console.WriteLine(item);
+                Console.WriteLine($"{i++} {item}");
             }
+            string[] b = new string[] { "2134r", "wafa" };
+            Console.WriteLine(b);
+
         }
     }
 }
