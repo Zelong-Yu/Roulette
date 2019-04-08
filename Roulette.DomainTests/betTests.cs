@@ -79,6 +79,7 @@ namespace Roulette.Domain.Tests
 
             //validate the overloaded method that takes a string
             Assert.AreEqual("00", Bet.NumberBet("00  "));
+            Assert.AreEqual("0", Bet.NumberBet("0"));
             Assert.AreEqual("00", Bet.NumberBet("00"));
             Assert.AreEqual("-1", Bet.NumberBet("0  0  "));
             Assert.AreEqual("00", Bet.NumberBet("    37"));
@@ -243,6 +244,41 @@ namespace Roulette.Domain.Tests
             Assert.AreEqual("-1", Bet.SixNumbersBet("asdjuag"));
             Assert.AreEqual("-1", Bet.SixNumbersBet(""));
             Assert.AreEqual("-1", Bet.SixNumbersBet("392139487654367"));
+        }
+
+        [TestMethod()]
+        public void SplitBetTest()
+        {
+            //Test 0/00 cases
+            Assert.AreEqual("0/00", Bet.SplitBet("00  "));
+            Assert.AreEqual("0/00", Bet.SplitBet("00"));
+            Assert.AreEqual("0/00", Bet.SplitBet("0"));
+            Assert.AreEqual("0/00", Bet.SplitBet("   0"));
+            Assert.AreEqual("0/00", Bet.SplitBet("0  "));
+            Assert.AreEqual("0/00", Bet.SplitBet("    37"));
+
+            //Test invalid input
+            Assert.AreEqual("-1", Bet.SplitBet("0  0  "));
+            Assert.AreEqual("-1", Bet.SplitBet("  39  "));
+            Assert.AreEqual("-1", Bet.SplitBet("-2"));
+            Assert.AreEqual("-1", Bet.SplitBet("asdjuag"));
+            Assert.AreEqual("-1", Bet.SplitBet(""));
+            Assert.AreEqual("-1", Bet.SplitBet("392139487654367"));
+
+            //Test Corner cases
+            Assert.AreEqual("1/2\n1/4\n", Bet.SplitBet("1"));
+            Assert.AreEqual("2/3\n3/6\n", Bet.SplitBet("3   "));
+            Assert.AreEqual("31/34\n34/35\n", Bet.SplitBet("  34   "));
+            Assert.AreEqual("33/36\n35/36\n", Bet.SplitBet(" 36 "));
+
+            //Test Edge Cases
+            Assert.AreEqual("1/2\n2/3\n2/5\n", Bet.SplitBet("2"));
+            Assert.AreEqual("32/35\n34/35\n35/36\n", Bet.SplitBet(" 35"));
+            Assert.AreEqual("10/13\n13/14\n13/16\n", Bet.SplitBet("13 "));
+            Assert.AreEqual("24/27\n26/27\n27/30\n", Bet.SplitBet("27"));
+
+            //Test Center Cases
+            Assert.AreEqual("23/26\n25/26\n26/27\n26/29\n", Bet.SplitBet("  26"));
         }
     }
 }

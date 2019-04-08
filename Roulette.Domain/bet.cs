@@ -305,5 +305,44 @@ namespace Roulette.Domain
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Check the winning bet of a Split bet. Odds against winning 18 to 1. Use 00 or 37 to denote 00
+        /// </summary>
+        /// <param name="bet">Bet in Split Bet</param>
+        /// <returns>
+        /// Returns the corresponding Splits (2 continguous numbers) that the bet wins
+        /// Return "0/00" if wheeled number is 0/00 (This denote the situation of putting bet on the edge of 0/00)
+        /// Return "-1" if input is not a valid bid. 
+        /// </returns>
+        public static string SplitBet(string bet)
+        {
+            bet = bet.Trim();
+            if (bet == "00" || bet == "0" || bet == "37") return "0/00";
+            bool isValid = int.TryParse(bet, out int parsedInt);
+            if (!isValid) return "-1";
+            if (!ValidateBet(parsedInt)) return "-1";
+
+            //find out a list of split pair numbers that adjacent the wheeled number
+
+            var otherNum = from n in numbers
+                           where (n != 0 && n != 37) &&  //Don't select 0 or 00
+                           (parsedInt % 3 == 1 && (n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) ||//First Column. No left number
+                           parsedInt % 3 == 2 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 1 == parsedInt || n - 3 == parsedInt) || //Second Column
+                           parsedInt % 3 == 0 && (n + 1 == parsedInt || n + 3 == parsedInt || n - 3 == parsedInt)) //Third Column. No right number
+                                select n;
+
+            
+            //Create a string builder that contains the winning SixNumbers
+            StringBuilder sb = new StringBuilder();
+            foreach (var n in otherNum)
+            {
+                if (n < parsedInt) 
+                    sb.Append($"{n}/{parsedInt}\n");
+                else sb.Append($"{parsedInt}/{n}\n");
+            }
+
+            return sb.ToString();
+        }
+
     }
 }
