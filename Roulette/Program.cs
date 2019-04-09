@@ -11,16 +11,7 @@ namespace Roulette
     {
         static void Main(string[] args)
         {
-            Bet a = new Bet();
-            int i = 0;
-            foreach (var item in a.Colors)
-            {
-                Console.WriteLine($"{i++} {item}");
-            }
-            string[] b = new string[] { "2134r", "wafa" };
-           //Console.WriteLine(Bet.StreetBet(12.ToString()));
-            //Console.WriteLine(Bet.SixNumbersBet(36.ToString()));
-            Console.WriteLine(Bet.SplitBet("3"));
+            new App().Run();
         }
     }
 }

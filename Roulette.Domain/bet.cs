@@ -8,7 +8,7 @@ namespace Roulette.Domain
 {
     public class Bet
     {
-        //Array to model numbers on wheel. 0 represents 0 and 37 represents 00
+        //Array to model numbers on wheel on ascending order. 0 represents 0 and 37 represents 00
         public static readonly int[] numbers = Enumerable.Range(0, 38).ToArray();
         //Array to model colors on wheel. 0 and 37(00) are green.
         public static readonly string[] colors = new string[]
@@ -52,6 +52,8 @@ namespace Roulette.Domain
             "red",   //36
             "green"  //00
         };
+        //Array to model numbers on wheel on original order starting at 0 counter-clockwise. 37 represents 00
+        public static readonly int[] numbersWheel = new int[] {0,2,14,35,23,4,16,33,21,6,18,31,19,8,12,29,25,10,27,37,1,13,36,24,3,15,34,22,5,17,32,20,7,11,30,26,9,28 };
 
         private int currentBetNumber;
 
