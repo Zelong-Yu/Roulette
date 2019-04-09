@@ -319,7 +319,7 @@ namespace Roulette.Domain
         public static string SplitBet(string bet)
         {
             bet = bet.Trim();
-            if (bet == "00" || bet == "0" || bet == "37") return "0/00";
+            if (bet == "00" || bet == "0" || bet == "37" || bet.Contains("-0") ) return "0/00";
             bool isValid = int.TryParse(bet, out int parsedInt);
             if (!isValid) return "-1";
             if (!ValidateBet(parsedInt)) return "-1";
