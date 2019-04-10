@@ -250,12 +250,12 @@ namespace Roulette.Domain.Tests
         public void SplitBetTest()
         {
             //Test 0/00 cases
-            Assert.AreEqual("0/00", Bet.SplitBet("00  "));
-            Assert.AreEqual("0/00", Bet.SplitBet("00"));
-            Assert.AreEqual("0/00", Bet.SplitBet("0"));
-            Assert.AreEqual("0/00", Bet.SplitBet("   0"));
-            Assert.AreEqual("0/00", Bet.SplitBet("0  "));
-            Assert.AreEqual("0/00", Bet.SplitBet("    37"));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("00  "));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("00"));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("0"));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("   0"));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("0  "));
+            Assert.AreEqual("0/00 don't win Split bet", Bet.SplitBet("    37"));
 
             //Test invalid input
             Assert.AreEqual("-1", Bet.SplitBet("0  0  "));
